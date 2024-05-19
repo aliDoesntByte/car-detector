@@ -1,6 +1,6 @@
 import torch
 
-YOLO_MODEL_PATH = "../models/yolov8m.pt"
+YOLO_MODEL_PATH = "./models/yolov8m.pt"
 MOVEMENT_THRESHOLD = 2
 INCOMING_DIRECTION = torch.tensor([0, 1], dtype=torch.float)
 OUTGOING_DIRECTION = torch.tensor([0, -1], dtype=torch.float)
