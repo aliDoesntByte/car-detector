@@ -6,6 +6,11 @@ class VehicleTypes(Enum):
     MOTORCYCLE = "motorcycle"
     BUS = "bus"
     TRUCK = "truck"
+    OTHER = "other"
+
+    @classmethod
+    def _missing_(cls, value):
+        return cls.OTHER
 
 
 # Data type to store important information about the vehicle that has been detected

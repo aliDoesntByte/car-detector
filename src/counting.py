@@ -4,8 +4,8 @@ import torch
 
 from src.vehicles import VehicleTypes
 from src.config import (INCOMING_DIRECTION,
-                    OUTGOING_DIRECTION,
-                    MOVEMENT_THRESHOLD)
+                        OUTGOING_DIRECTION,
+                        MOVEMENT_THRESHOLD)
 
 
 class Direction(Enum):
@@ -27,9 +27,10 @@ class VehicleCountingType:
 
 # Vehicles that are of this counting type have to pass a movement threshold to be counted
 # Movement has to be either incoming or outgoing
-class DirectionalMovingVehicleCounting:
+class DirectionalMovingVehicleCounting(VehicleCountingType):
 
     def __init__(self, directions_to_count, incoming_direction, outgoing_direction, movement_threshold):
+        super().__init__()
         self.directions_to_count = directions_to_count
         self.incoming_direction = incoming_direction
         self.outgoing_direction = outgoing_direction
@@ -63,6 +64,15 @@ class DirectionalMovingVehicleCounting:
         return False
 
 
+class NotVehicleCounting(VehicleCountingType):
+
+    def __init__(self):
+        super().__init__()
+
+    def should_count(self, vehicle):
+        return False
+
+
 class VehicleCountingFactory:
 
     def __init__(self):
@@ -73,6 +83,7 @@ class VehicleCountingFactory:
         self.outgoing_direction = OUTGOING_DIRECTION
         self.movement_threshold = 0
 
+    # Setting up configurations for the directional moving class part of the factory
     def set_directional_moving_counting_type(self, directions_to_count, incoming_direction=INCOMING_DIRECTION,
                                              outgoing_direction=OUTGOING_DIRECTION,
                                              movement_threshold=MOVEMENT_THRESHOLD):
@@ -85,4 +96,5 @@ class VehicleCountingFactory:
         if vehicle_type in self.directional_moving_vehicle_types:
             return DirectionalMovingVehicleCounting(self.directions_to_count, self.incoming_direction,
                                                     self.outgoing_direction, self.movement_threshold)
-
+        else:
+            return NotVehicleCounting()
