@@ -1,5 +1,6 @@
 from ultralytics import YOLO
 import cv2
+import torch
 
 from src.counting import VehicleCountingFactory
 from src.vehicles import Vehicle, VehicleTypes
@@ -23,6 +24,8 @@ class VehicleTracker:
 
     def __init__(self, frame_list):
         self.model = YOLO(YOLO_MODEL_PATH)
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.model = self.model.to(device)
         self.frame_list = frame_list
         self.frame_counter = 0
         self.vehicles = {}
